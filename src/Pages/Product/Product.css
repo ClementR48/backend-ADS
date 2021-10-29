@@ -1,0 +1,51 @@
+.product-form {
+  width: 80%;
+  max-width: 1300px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-form label {
+  margin-bottom: 5px;
+}
+
+.product-form input,
+.product-form textarea,
+.product-form select {
+  margin-bottom: 20px;
+  width: 70%;
+  padding: 10px;
+}
+
+.product-form .button-container button {
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  
+}
+
+.product-form .button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.product-form .button-container .button-delete {
+  background-color: rgb(162,24,20);
+  color: white;
+}
+.product-form .button-container .button-modify {
+  background-color: rgb(124, 112, 231);
+  color: white;
+}
+
+.product-form img {
+  width: 150px;
+  margin-bottom: 5px;
+}

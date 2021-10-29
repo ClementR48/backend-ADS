@@ -1,0 +1,29 @@
+table {
+  min-width: 500px;
+  width: 80%;
+  max-width: 1300px;
+  margin: 50px auto;
+}
+
+tbody {
+  background-color: rgb(250, 173, 173);
+  padding: 50px;
+}
+
+tbody tr td {
+  color: blue;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+tbody tr td a svg:hover {
+  stroke: rgb(152, 152, 153);
+}
+
+tbody tr td img {
+  width: 100px;
+}
+
+.tr {
+  border: 1px black solid;
+}

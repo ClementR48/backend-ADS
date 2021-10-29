@@ -1,0 +1,49 @@
+.form-auth {
+  width: 100%;
+  height: 100vh;
+  background-color: pink;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+
+.inputs-container {
+  width: 50%;
+  max-width: 1300px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgb(255, 211, 218);
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+.inputs-container h2 {
+  margin-bottom: 20px;
+}
+
+.inputs-container input {
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  border: none;
+}
+
+.inputs-container button {
+  padding: 10px;
+  border-radius: 5px;
+  width: 50%;
+  border: none;
+  background-color: rgb(255, 153, 170);
+  cursor: pointer;
+  
+}
+
+.inputs-container button:hover {
+  background-color: rgb(255, 197, 207);
+}
