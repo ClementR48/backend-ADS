@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Product.css";
 import { useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
@@ -27,6 +27,7 @@ const Product = () => {
   const [color, setColor] = useState({
     firstColor: productClicked.color.firstColor,
     secondColor: productClicked.color.secondColor,
+    thirdColor: productClicked.color.thirdColor
   });
   const [description, setDescription] = useState(productClicked.description);
   const [enamelling, setEnamelling] = useState(productClicked.enamelling);
@@ -52,6 +53,9 @@ const Product = () => {
       setEnamelling(false);
     }
   };
+
+
+
 
   /* Redicretion page  */
 
@@ -88,6 +92,7 @@ const Product = () => {
         color: {
           firstColor: color.firstColor,
           secondColor: color.secondColor,
+          thirdColor: color.thirdColor
         },
         description: description,
         enamelling: enamelling,
@@ -139,7 +144,8 @@ const Product = () => {
         type="text"
         id="category"
       />
-      <label htmlFor="firstcolor">Couleurs</label>
+      <label htmlFor="firstcolor">Premiere Couleur</label>
+      <span style={{backgroundColor: color.firstColor}}></span>
       <input
         value={color.firstColor}
         onChange={(e) =>
@@ -151,7 +157,8 @@ const Product = () => {
         type="text"
         id="firstcolor"
       />
-      <label htmlFor="secondcolor">Couleurs</label>
+      <label htmlFor="secondcolor">Deuxieme Couleur</label>
+      <span style={{backgroundColor: color.secondColor}}></span>
       <input
         value={color.secondColor}
         onChange={(e) =>
@@ -162,6 +169,19 @@ const Product = () => {
         }
         type="text"
         id="secondcolor"
+      />
+      <label htmlFor="thirdColor">Troisieme Couleur</label>
+      <span style={{backgroundColor: color.thirdColor}}></span>
+      <input
+        value={color.thirdColor}
+        onChange={(e) =>
+          setColor({
+            ...color,
+            thirdColor: e.target.value,
+          })
+        }
+        type="text"
+        id="thirdColor"
       />
       <label htmlFor="description">Description</label>
       <textarea

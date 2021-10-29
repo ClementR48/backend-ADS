@@ -4,13 +4,18 @@ import "./AddProduct.css";
 import { useHistory } from "react-router-dom";
 import { addDoc, collection } from "@firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
+import { useSelector } from "react-redux";
 
 const AddProduct = () => {
+  const {products} = useSelector((state) => ({
+    ...state.productReducer
+  }))
   const [name, setName] = useState();
   const [category, setCategory] = useState();
   const [color, setColor] = useState({
     firstColor: "",
     secondColor: "",
+    thirdColor:""
   });
   const [description, setDescription] = useState();
   const [enamelling, setEnamelling] = useState();
@@ -41,10 +46,12 @@ const AddProduct = () => {
     history.push("/");
   };
 
+
   const productsCollectionRef = collection(db, "Product");
 
   /* Create un nouvel user */
   const createProduct = async () => {
+
     if (
       name === undefined ||
       category === undefined ||
@@ -61,6 +68,8 @@ const AddProduct = () => {
       price === undefined
     ) {
       alert("Tous les champs doivent être remplis");
+    } else if(products.filter(product => product === name)){
+      alert(`Le nom ${name} est déjà utilisé ma petite ... Trouves en un autre ;)`)
     } else {
       const newFields = {
         name: name,
@@ -68,6 +77,7 @@ const AddProduct = () => {
         color: {
           firstColor: color.firstColor,
           secondColor: color.secondColor,
+          thirdImage: color.thirdColor
         },
         description: description,
         enamelling: enamelling,
@@ -112,7 +122,8 @@ const AddProduct = () => {
         type="text"
         id="category"
       />
-      <label htmlFor="firstcolor">Couleurs</label>
+      <label htmlFor="firstcolor">Premiere Couleur</label>
+      <span style={{backgroundColor: color.firstColor}}></span>
       <input
         value={color.firstColor}
         onChange={(e) =>
@@ -124,7 +135,8 @@ const AddProduct = () => {
         type="text"
         id="firstcolor"
       />
-      <label htmlFor="secondcolor">Couleurs</label>
+      <label htmlFor="secondcolor">Deuxieme Couleur</label>
+      <span style={{backgroundColor: color.secondColor}}></span>
       <input
         value={color.secondColor}
         onChange={(e) =>
@@ -135,6 +147,19 @@ const AddProduct = () => {
         }
         type="text"
         id="secondcolor"
+      />
+      <label htmlFor="thirdColor">Troisieme Couleur</label>
+      <span style={{backgroundColor: color.thirdColor}}></span>
+      <input
+        value={color.thirdColor}
+        onChange={(e) =>
+          setColor({
+            ...color,
+            thirdColor: e.target.value,
+          })
+        }
+        type="text"
+        id="thirdColor"
       />
       <label htmlFor="description">Description</label>
       <textarea
@@ -154,7 +179,7 @@ const AddProduct = () => {
       </select>
 
       <label htmlFor="image1">Image Principale</label>
-      <img src={image.firstImage} alt="produit 3eme "></img>
+      {image.firstImage === "" ? "" : <img src={image.firstImage} alt="produit 3eme "></img>}
       <input
         value={image.firstImage}
         onChange={(e) =>
@@ -167,7 +192,7 @@ const AddProduct = () => {
         id="image1"
       />
       <label htmlFor="image2">Image Secondaire</label>
-      <img src={image.secondImage} alt="produit 3eme "></img>
+      {image.secondImage === "" ? "" : <img src={image.secondImage} alt="produit 3eme "></img>}
       <input
         value={image.secondImage}
         onChange={(e) =>
@@ -180,7 +205,7 @@ const AddProduct = () => {
         id="image2"
       />
       <label htmlFor="image3">Image 3eme </label>
-      <img src={image.thirdImage} alt="produit 3eme "></img>
+      {image.thirdImage === "" ? "" : <img src={image.thirdImage} alt="produit 3eme "></img>}
       <input
         value={image.thirdImage}
         onChange={(e) =>

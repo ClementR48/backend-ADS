@@ -27,6 +27,7 @@ const ListProduct = () => {
     };
 
     getProducts();
+
   }, []);
 
   return (
@@ -46,7 +47,7 @@ const ListProduct = () => {
         {products.map((product) => {
           return (
             
-              <tr key={product.id}>
+              <tr className={product.quantity === "0" ? "tr-empty" : ""} key={product.id}>
                 <td><img src={product.image.firstImage} alt="produit" /></td>
                 <td>{product.name}</td>
                 <td>{product.category}</td>

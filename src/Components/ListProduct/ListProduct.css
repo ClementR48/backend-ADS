@@ -24,6 +24,9 @@ tbody tr td img {
   width: 100px;
 }
 
-.tr {
-  border: 1px black solid;
+
+tbody .tr-empty td{
+
+  background-color: grey;
+  opacity: 0.5;
 }

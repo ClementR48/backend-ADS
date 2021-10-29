@@ -8,6 +8,7 @@
   justify-content: center;
 }
 
+
 .product-form label {
   margin-bottom: 5px;
 }
@@ -47,5 +48,11 @@
 
 .product-form img {
   width: 150px;
+  margin-bottom: 5px;
+}
+
+.product-form span {
+  width: 20%;
+  height: 10px;
   margin-bottom: 5px;
 }
