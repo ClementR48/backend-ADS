@@ -68,8 +68,6 @@ const AddProduct = () => {
       price === undefined
     ) {
       alert("Tous les champs doivent être remplis");
-    } else if(products.filter(product => product === name)){
-      alert(`Le nom ${name} est déjà utilisé ma petite ... Trouves en un autre ;)`)
     } else {
       const newFields = {
         name: name,
