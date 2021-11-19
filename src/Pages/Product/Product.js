@@ -1,11 +1,34 @@
 import React, { useEffect, useState } from "react";
 import "./Product.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { deleteDoc, doc, updateDoc } from "@firebase/firestore";
+import { deleteDoc, doc, updateDoc, collection, getDocs } from "@firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 
 const Product = () => {
+
+   /* Appel de toutes les catégorie */
+
+   const { categories } = useSelector((state) => ({
+    ...state.productReducer,
+  }));
+
+  const dispatch = useDispatch();
+
+  const categoryCollectionRef = collection(db, "Category");
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const data = await getDocs(categoryCollectionRef);
+      const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      dispatch({
+        type: "LOADCATEGORIES",
+        payload: newData,
+      });
+    };
+
+    getCategories();
+  }, []);
   /* Récuperation du parametre en url */
   const { slug } = useParams();
 
@@ -20,10 +43,15 @@ const Product = () => {
     (obj) => obj.name.replace(/\s+/g, "").trim() === slug
   );
 
-  /* Tous les informations d'un produit */
+
+  
+  /* Toutes les informations d'un produit */
 
   const [name, setName] = useState(productClicked.name);
-  const [category, setCategory] = useState(productClicked.category);
+  const [category, setCategory] = useState({
+    name: productClicked.category.name,
+    logo: productClicked.category.logo
+  });
   const [color, setColor] = useState({
     firstColor: productClicked.color.firstColor,
     secondColor: productClicked.color.secondColor,
@@ -44,6 +72,8 @@ const Product = () => {
   const [quantity, setQuantity] = useState(productClicked.quantity);
   const [price, setPrice] = useState(productClicked.price);
 
+  console.log(description);
+
   /* Recuperation valeur Select */
 
   const selectValue = (e) => {
@@ -54,6 +84,16 @@ const Product = () => {
     }
   };
 
+    /* func qui choisit automatiquement le logo correspondant a la categorie */
+
+    const handleCategory = (e) => {
+      const categChoose = categories.filter(
+        (categorie) => categorie.name === e.target.value
+      );
+      if (categChoose.length > 0) {
+        setCategory({ name: categChoose[0].name, logo: categChoose[0].logo });
+      }
+    };
 
 
 
@@ -70,25 +110,26 @@ const Product = () => {
   const upadteProduct = async (id) => {
     const productDoc = doc(db, "Product", id);
     if (
-      name === undefined ||
-      category === undefined ||
+      name === "" ||
+      category.name === "" ||
       color.firstColor === "" ||
-      description === undefined ||
+      description === "" ||
       enamelling === undefined ||
       image.firstImage === "" ||
-      image.secondImage === "" ||
-      image.thirdImage === "" ||
-      material === undefined ||
+      material === "" ||
       dimensions.height === 0 ||
       dimensions.width === 0 ||
-      quantity === undefined ||
-      price === undefined
+      quantity === 0 ||
+      price === 0
     ) {
       alert("Tous les champs doivent être remplis");
     } else {
       const newFields = {
         name: name,
-        category: category,
+        category: {
+          name: category.name,
+          logo: category.logo
+        },
         color: {
           firstColor: color.firstColor,
           secondColor: color.secondColor,
@@ -137,13 +178,24 @@ const Product = () => {
         type="text"
         id="name"
       />
-      <label htmlFor="category">Categorie</label>
-      <input
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        type="text"
-        id="category"
-      />
+      <label htmlFor="categories">Categorie</label>
+      <select
+        id="categories"
+        value={category.name}
+        onChange={(e) => {
+          setCategory({ ...category, name: e.target.value });
+          handleCategory(e);
+        }}
+      >
+        <option value="">Categorie</option>
+        {categories.map((categ) => {
+          return (
+            <option value={categ.name} key={categ.id}>
+              {categ.name}
+            </option>
+          );
+        })}
+      </select>
       <label htmlFor="firstcolor">Premiere Couleur</label>
       <span style={{backgroundColor: color.firstColor}}></span>
       <input
@@ -252,7 +304,7 @@ const Product = () => {
         onChange={(e) =>
           setDimensions({
             ...dimensions,
-            height: e.target.value,
+            height: Number(e.target.value),
           })
         }
         type="number"
@@ -264,7 +316,7 @@ const Product = () => {
         onChange={(e) =>
           setDimensions({
             ...dimensions,
-            width: e.target.value,
+            width: Number(e.target.value),
           })
         }
         type="number"
@@ -273,14 +325,14 @@ const Product = () => {
       <label htmlFor="quantity">Quantité</label>
       <input
         value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
+        onChange={(e) => setQuantity(Number(e.target.value))}
         type="number"
         id="quantity"
       />
       <label htmlFor="price">Prix</label>
       <input
         value={price}
-        onChange={(e) => setPrice(e.target.value)}
+        onChange={(e) => setPrice(Number(e.target.value))}
         type="number"
         id="price"
       />
